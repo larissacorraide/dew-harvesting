@@ -57,8 +57,12 @@ df = df[select]
 
 df[datetime_label] = pd.to_datetime(df[datetime_label])
 
-#df = df[df[datetime_label].apply(lambda d: d.hour == 6)] #Estimation using the 6am data
+df = df[df[datetime_label].apply(lambda d: d.hour == 6)] # Selecting data 6am
 
-df[estimation_label] = df[df[datetime_label].apply(lambda d: d.hour == 6)].apply(dew_estimation_function, axis=1)
+df[estimation_label] = df.apply(dew_estimation_function, axis=1) #Estimating dew yield
 
-df.to_csv('teste.csv',encoding="utf-8")
+df1 = df.groupby(df[name_label])[estimation_label].mean() #Dew yield mean by weather station
+
+df1.to_csv('teste.csv',encoding="utf-8") #Saving data
+
+#df[datetime_label].dt.month
